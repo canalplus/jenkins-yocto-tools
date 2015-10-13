@@ -49,6 +49,7 @@ cleanup()
 	    kill $SSH_AGENT_PID
 	    SSH_AGENT_PID=""
     fi
+    rm $lockfile
     exit "$rc"
 }
 
@@ -115,6 +116,12 @@ then
     exit 5
 fi
 
+if [ -z "$MACHINE_TYPE" ]
+then
+    echo "FATAL: Couldn't get the MACHINE_TYPE variable from the environment."
+    exit 5
+fi
+
 export ARTIFACTS=${WORKSPACE}/artifacts
 
 if [ -e "$ARTIFACTS" ]; then
@@ -165,15 +172,16 @@ fi
 
 if [ -d poky/build/tmp/work ]; then
 	cd poky/build/tmp/work
-	(find . -path "./*/*/temp/*"; find ./*/*/*/build -name "*.log") | tar -zcf $ARTIFACTS/logs.tgz -T -
+    (find . -path "./*/*/temp/*") | tar -zcf $ARTIFACTS/logs.tgz -T -
 	cd -
 fi
 
 # Poky 1.5 adds $MACHINE to the path under images. Search in "images" and subdirs
 for dir in `find poky/build/tmp/deploy/images -maxdepth 1 -type d 2>/dev/null`; do
 	cd $dir
-        mv core-image* "$ARTIFACTS"
-        cp bzImage* "$ARTIFACTS"
+        for artFile in `find ./ -maxdepth 1 -name 'axe-image-cubox-i*' -print -quit`; do
+           mv $artFile "$ARTIFACTS"
+        done
 	cd -
 done
 
