@@ -124,13 +124,13 @@ fi
 bitbake $EXTRA_BITBAKE_FLAGS $target 2>&1 | tee bitbake.log
 build_exit_code=${PIPESTATUS[0]}
 
-if grep -q "is trying to install files into a shared area when those files already exist" bitbake.log; then
-    # If we got warning from overwriting a file in sysroot, we want that
-    # to be a hard failure.
-    echo "ERROR: build overwrote existing files in sysroot"
-    touch FAILED_SYSROOT
-    build_exit_code=1
-fi
+# if grep -q "is trying to install files into a shared area when those files already exist" bitbake.log; then
+#     # If we got warning from overwriting a file in sysroot, we want that
+#     # to be a hard failure.
+#     echo "ERROR: build overwrote existing files in sysroot"
+#     touch FAILED_SYSROOT
+#     build_exit_code=1
+# fi
 
 if [ $build_exit_code -eq 0 ]; then
     if [ "$cleanup_after" -ne 0 ]; then
