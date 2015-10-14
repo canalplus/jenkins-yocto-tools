@@ -179,7 +179,7 @@ fi
 # Poky 1.5 adds $MACHINE to the path under images. Search in "images" and subdirs
 for dir in `find poky/build/tmp/deploy/images -maxdepth 1 -type d 2>/dev/null`; do
 	cd $dir
-        for artFile in `find ./ -maxdepth 1 -name '$TARGET-$MACHINE_TYPE*' -print -quit`; do
+        for artFile in `find ./ -maxdepth 1 -name '$TARGET-$MACHINE_TYPE*' -print`; do
            mv $artFile "$ARTIFACTS"
         done
 	cd -
