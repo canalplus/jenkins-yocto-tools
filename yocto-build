@@ -172,9 +172,6 @@ fi
 #---------------------------------------------------------------------------
 
 cd ${build_bundle_dir}
-cp .gitmodules layer-info.log
-git submodule status >> layer-info.log
-git log -1 --pretty=oneline | awk '{print $1}' > bundle-rev.log
 
 if [ $build_exit_code -ne 0 ]
 then
