@@ -176,25 +176,10 @@ if [ -d poky/build/tmp/work ]; then
 	cd -
 fi
 
-# Poky 1.5 adds $MACHINE to the path under images. Search in "images" and subdirs
-for dir in `find poky/build/tmp/deploy/images -maxdepth 1 -type d 2>/dev/null`; do
-	cd $dir
-        for artFile in `find ./ -maxdepth 1 -name '$TARGET-$MACHINE_TYPE*' -print`; do
-           mv $artFile "$ARTIFACTS"
-        done
-	cd -
-done
-
-if [ -d poky/build/tmp/deploy/sdk ]; then
-        cd poky/build/tmp/deploy/sdk
-        mv *.sh "$ARTIFACTS"
-        cd -
-fi
-
-if [ -d poky/build/tmp/stamps ]; then
-        cd poky/build/tmp/stamps
-	tar -zcf "$ARTIFACTS"/stamps.tgz *
-        cd -
+if [ -d poky/build/tmp/deploy/images/$MACHINE_TYPE/ ]; then
+        cp "$TARGET-$MACHINE_TYPE.enc.update.tar" "$ARTIFACTS"
+        cp "$TARGET-$MACHINE_TYPE.x1_img.bin" "$ARTIFACTS"
+        cp "$TARGET-$MACHINE_TYPE.tar.gz" "$ARTIFACTS"
 fi
 
 # Symlinks are pointless and cause jenkins to use extra space
