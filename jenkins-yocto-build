@@ -164,8 +164,6 @@ echo "Entire build output:"
 echo
 cat $LOGFILE
 
-mv $WORKSPACE/*.log "$ARTIFACTS"
-
 if [ -e poky/build/fail.tgz ]; then
 	mv poky/build/fail.tgz $ARTIFACTS
 fi
@@ -176,10 +174,10 @@ if [ -d poky/build/tmp/work ]; then
 	cd -
 fi
 
-if [ -d poky/build/tmp/deploy/images/$MACHINE_TYPE/ ]; then
-        cp "$TARGET-$MACHINE_TYPE.enc.update.tar" "$ARTIFACTS"
-        cp "$TARGET-$MACHINE_TYPE.x1_img.bin" "$ARTIFACTS"
-        cp "$TARGET-$MACHINE_TYPE.tar.gz" "$ARTIFACTS"
+if [ -d $WORKSPACE/poky/build/tmp/deploy/images/$MACHINE_TYPE/ ]; then
+        cp $WORKSPACE/poky/build/tmp/deploy/images/$MACHINE_TYPE/"$TARGET-$MACHINE_TYPE.enc.update.tar" "$ARTIFACTS"
+        cp $WORKSPACE/poky/build/tmp/deploy/images/$MACHINE_TYPE/"$TARGET-$MACHINE_TYPE.x1_img.bin" "$ARTIFACTS"
+        cp $WORKSPACE/poky/build/tmp/deploy/images/$MACHINE_TYPE/"$TARGET-$MACHINE_TYPE.tar.gz" "$ARTIFACTS"
 fi
 
 # Symlinks are pointless and cause jenkins to use extra space
